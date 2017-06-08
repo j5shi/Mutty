@@ -1,0 +1,6 @@
+Building MuTTY requires recent version of gcc and g++ for Cygwin. It can not be
+built with a MinGW compiler, because it relies on some Unix facilities that are
+not available on plain Windows, in particular pseudo terminal devices (ptys).
+
+To compile, just run 'make'. (Add a -j option as desired.)
+To install, simply copy mutty.exe to an appropriate place, e.g. /bin.
