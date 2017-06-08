@@ -13,6 +13,8 @@ you can run multiple session in single window using tabs.
 - To close the current tab: `Ctrl + Shift + W`
 - To switch to the left tab: `Ctrl + Shift + A`
 - To switch to the right tab: `Ctrl + Shift + D`
+- To move tab left: `Ctrl + Shift + L`
+- To move tab right: `Ctrl + Shift + R`
 
 If you find bugs (there are probably many), you may report them on Github or send pull requests
 

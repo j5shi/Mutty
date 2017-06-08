@@ -795,6 +795,8 @@ win_key_down(WPARAM wp, LPARAM lp)
       else if (shift && ctrl && key == 'W') child_terminate(active_term->child);
       else if (shift && ctrl && key == 'A') win_tab_change(-1);
       else if (shift && ctrl && key == 'D') win_tab_change(1);
+      else if (shift && ctrl && key == 'L') win_tab_move(-1);
+      else if (shift && ctrl && key == 'R') win_tab_move(1);
       else if (char_key());
       else if (active_term->modify_other_keys > 1) modify_other_key();
       else if (ctrl_key());
