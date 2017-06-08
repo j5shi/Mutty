@@ -1,6 +1,6 @@
 # Mutty 
 
-![Mutty](http://i.imgur.com/ZMpvcNH.png)
+![Mutty](./demo/mutty_screen_shot.png)
 
 Mutty is a [Cygwin](http://cygwin.com) Terminal emulator with tabs. It is useful for Windows and
 Cygwin users who want a powerful terminal.

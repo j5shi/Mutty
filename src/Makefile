@@ -1,18 +1,40 @@
-SRC := charset.c child.c config.c ctrls.c minibidi.c std.c term.c termclip.c \
-	termline.c termmouse.c termout.c winclip.c winctrls.c windialog.c wininput.c \
-	winmain.c winprint.c wintext.c wintip.c xcwidth.c \
-	childxx.cc winxx.cc \
-	res.rc
+SRC := charset.c 
+SRC += child.c 
+SRC += config.c 
+SRC += ctrls.c 
+SRC += minibidi.c 
+SRC += std.c 
+SRC += term.c 
+SRC += termclip.c
+SRC += termline.c 
+SRC += termmouse.c 
+SRC += termout.c 
+SRC += winclip.c 
+SRC += winctrls.c 
+SRC += windialog.c 
+SRC += wininput.c
+SRC += winmain.c 
+SRC += winprint.c 
+SRC += wintext.c 
+SRC += wintip.c 
+SRC += xcwidth.c
+SRC += childxx.cc 
+SRC += winxx.cc
+SRC += res.rc
+
 BIN ?= mutty.exe
 CXX = g++
-CC = gcc
-RC = windres
+CC  = gcc
+RC  = windres
 
 CXXFLAGS ?= -Wall -Wextra -std=gnu++11
+
 CFLAGS ?= -std=gnu99 -include std.h -Wall -Wextra -Wundef -Werror
+
 LDFLAGS := -static-libgcc -mwindows -lcomctl32 -limm32 -lwinspool -lole32 -luuid -ld2d1
 
 TARGET := $(shell $(CC) -dumpmachine)
+
 CPPFLAGS := -DTARGET=$(TARGET) -D_GNU_SOURCE
 
 BUILD_DIR = build/
@@ -25,11 +47,11 @@ else
   extraflags := -Os
   CPPFLAGS += -DNDEBUG
 endif
+
 CFLAGS += $(extraflags)
 CXXFLAGS += $(extraflags)
 
-# ---------------------------
-
+#***************************************************************************************************
 objfiles := $(addprefix $(BUILD_DIR), $(addsuffix .o, $(basename $(SRC))))
 depfiles := $(objfiles:.o=.d)
 
