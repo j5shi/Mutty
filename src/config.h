@@ -20,98 +20,112 @@ typedef uint colour;
 enum { DEFAULT_COLOUR = UINT_MAX };
 
 static inline colour
-make_colour(uchar r, uchar g, uchar b) { return r | g << 8 | b << 16; }
+make_colour(uchar r, uchar g, uchar b)
+{
+    return r | g << 8 | b << 16;
+}
 
 bool parse_colour(string, colour *);
 
-static inline uchar red(colour c) { return c; }
-static inline uchar green(colour c) { return c >> 8; }
-static inline uchar blue(colour c) { return c >> 16; }
+static inline uchar red(colour c)
+{
+    return c;
+}
+static inline uchar green(colour c)
+{
+    return c >> 8;
+}
+static inline uchar blue(colour c)
+{
+    return c >> 16;
+}
 
 
 // Font properties.
 
-typedef struct {
-  string name;
-  int size;
-  bool isbold;
+typedef struct
+{
+    string name;
+    int size;
+    bool isbold;
 } font_spec;
 
 
 // Configuration data.
 
-typedef struct {
-  // Looks
-  colour fg_colour, bg_colour, cursor_colour;
-  colour tab_fg_colour, tab_bg_colour, tab_attention_bg_colour, tab_active_bg_colour;
-  char transparency;
-  bool opaque_when_focused;
-  char cursor_type;
-  bool cursor_blinks;
-  // Text
-  font_spec font;
-  char font_smoothing;
-  char bold_as_font;    // 0 = false, 1 = true, -1 = undefined
-  bool bold_as_colour;
-  bool allow_blinking;
-  string locale;
-  string charset;
-  // Keys
-  bool backspace_sends_bs;
-  bool delete_sends_del;
-  bool ctrl_alt_is_altgr;
-  bool clip_shortcuts;
-  bool window_shortcuts;
-  bool switch_shortcuts;
-  bool zoom_shortcuts;
-  bool alt_fn_shortcuts;
-  bool ctrl_shift_shortcuts;
-  string break_string;
-  string pause_string;
-  // Mouse
-  bool copy_on_select;
-  bool copy_as_rtf;
-  bool clicks_place_cursor;
-  char middle_click_action;
-  char right_click_action;
-  bool clicks_target_app;
-  char click_target_mod;
-  bool hide_mouse;
-  // Window
-  int cols, rows;
-  int scrollback_lines;
-  char scrollbar;
-  char scroll_mod;
-  bool pgupdn_scroll;
-  // Terminal
-  string term;
-  string answerback;
-  bool bell_sound;
-  int bell_type;
-  int bell_freq;
-  int bell_len;
-  bool bell_flash;
-  bool bell_taskbar;
-  string printer;
-  bool confirm_exit;
-  // Command line
-  string classname;
-  char hold;
-  string icon;
-  string log;
-  string title;
-  bool utmp;
-  char window;
-  int x, y;
-  // "Hidden"
-  string app_id;
-  int col_spacing, row_spacing;
-  string word_chars;
-  string word_chars_excl;
-  colour ime_cursor_colour;
-  colour ansi_colours[16];
-  // Legacy
-  bool use_system_colours;
+typedef struct
+{
+    // Looks
+    colour fg_colour, bg_colour, cursor_colour;
+    colour tab_fg_colour, tab_bg_colour, tab_attention_bg_colour, tab_active_bg_colour;
+    char transparency;
+    bool opaque_when_focused;
+    char cursor_type;
+    bool cursor_blinks;
+    // Text
+    font_spec font;
+    char font_smoothing;
+    char bold_as_font;    // 0 = false, 1 = true, -1 = undefined
+    bool bold_as_colour;
+    bool allow_blinking;
+    string locale;
+    string charset;
+    // Keys
+    bool backspace_sends_bs;
+    bool delete_sends_del;
+    bool ctrl_alt_is_altgr;
+    bool clip_shortcuts;
+    bool window_shortcuts;
+    bool switch_shortcuts;
+    bool zoom_shortcuts;
+    bool alt_fn_shortcuts;
+    bool ctrl_shift_shortcuts;
+    string break_string;
+    string pause_string;
+    // Mouse
+    bool copy_on_select;
+    bool copy_as_rtf;
+    bool clicks_place_cursor;
+    char middle_click_action;
+    char right_click_action;
+    bool clicks_target_app;
+    char click_target_mod;
+    bool hide_mouse;
+    // Window
+    int cols, rows;
+    int scrollback_lines;
+    char scrollbar;
+    char scroll_mod;
+    bool pgupdn_scroll;
+    // Terminal
+    string term;
+    string answerback;
+    bool bell_sound;
+    int bell_type;
+    int bell_freq;
+    int bell_len;
+    bool bell_flash;
+    bool bell_taskbar;
+    string printer;
+    bool confirm_exit;
+    // Command line
+    string classname;
+    char hold;
+    string icon;
+    string log;
+    string title;
+    bool utmp;
+    char window;
+    int x, y;
+    // "Hidden"
+    string app_id;
+    int col_spacing, row_spacing;
+    string word_chars;
+    string word_chars_excl;
+    colour ime_cursor_colour;
+    colour ansi_colours[16];
+    // Legacy
+    bool use_system_colours;
 } config;
 
 extern config cfg, new_cfg;

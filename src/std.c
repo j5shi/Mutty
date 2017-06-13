@@ -4,8 +4,8 @@
 void
 strset(string *sp, string s)
 {
-  uint size = strlen(s) + 1;
-  *sp = memcpy(renewn((char *)*sp, size), s, size);
+    uint size = strlen(s) + 1;
+    *sp = memcpy(renewn((char *)*sp, size), s, size);
 }
 
 #if CYGWIN_VERSION_API_MINOR < 70
@@ -13,28 +13,36 @@ strset(string *sp, string s)
 int
 vasprintf(char **buf, const char *fmt, va_list va)
 {
-  va_list va2;
-  va_copy(va2, va);
-  int len = vsnprintf(0, 0, fmt, va2);
-  va_end(va2);
-  if (len > 0) {
-    *buf = malloc(len + 1);
-    if (*buf)
-      vsnprintf(*buf, len + 1, fmt, va);
-  }
-  else
-    *buf = 0;
-  return len;
+    va_list va2;
+    va_copy(va2, va);
+    int len = vsnprintf(0, 0, fmt, va2);
+    va_end(va2);
+
+    if (len > 0)
+    {
+        *buf = malloc(len + 1);
+
+        if (*buf)
+        {
+            vsnprintf(*buf, len + 1, fmt, va);
+        }
+    }
+    else
+    {
+        *buf = 0;
+    }
+
+    return len;
 }
 
 int
 asprintf(char **buf, const char *fmt, ...)
 {
-  va_list va;
-  va_start(va, fmt);
-  int len = vasprintf(buf, fmt, va);
-  va_end(va);
-  return len;
+    va_list va;
+    va_start(va, fmt);
+    int len = vasprintf(buf, fmt, va);
+    va_end(va);
+    return len;
 }
 
 #endif
@@ -42,19 +50,28 @@ asprintf(char **buf, const char *fmt, ...)
 char *
 asform(const char *fmt, ...)
 {
-  char *s = 0;
-  va_list va;
-  va_start(va, fmt);
-  vasprintf(&s, fmt, va);
-  va_end(va);
-  return s;
+    char *s = 0;
+    va_list va;
+    va_start(va, fmt);
+    vasprintf(&s, fmt, va);
+    va_end(va);
+    return s;
 }
 
 
 #if CYGWIN_VERSION_API_MINOR < 74
-int iswalnum(wint_t wc) { return wc < 0x100 && isalnum(wc); }
-int iswalpha(wint_t wc) { return wc < 0x100 && isalpha(wc); }
-int iswspace(wint_t wc) { return wc < 0x100 && isspace(wc); }
+int iswalnum(wint_t wc)
+{
+    return wc < 0x100 && isalnum(wc);
+}
+int iswalpha(wint_t wc)
+{
+    return wc < 0x100 && isalpha(wc);
+}
+int iswspace(wint_t wc)
+{
+    return wc < 0x100 && isspace(wc);
+}
 #endif
 
 
@@ -69,51 +86,57 @@ int iswspace(wint_t wc) { return wc < 0x100 && isspace(wc); }
 int
 argz_create(char *const argv[], char **argz, size_t *argz_len)
 {
-  int argc = 0;
-  int i = 0;
-  int len = 0;
-  char *iter;
+    int argc = 0;
+    int i = 0;
+    int len = 0;
+    char *iter;
 
-  *argz_len = 0;
+    *argz_len = 0;
 
-  if (*argv == NULL)
+    if (*argv == NULL)
     {
-      *argz = NULL;
-      return 0;
+        *argz = NULL;
+        return 0;
     }
 
-  while (argv[argc])
+    while (argv[argc])
     {
-      *argz_len += (strlen(argv[argc]) + 1);
-      argc++;
+        *argz_len += (strlen(argv[argc]) + 1);
+        argc++;
     }
 
-  /* There are argc strings to copy into argz. */
-  if(!(*argz = (char *)malloc(*argz_len)))
-    return ENOMEM;
-
-  iter = *argz;
-  for(i = 0; i < argc; i++)
+    /* There are argc strings to copy into argz. */
+    if (!(*argz = (char *)malloc(*argz_len)))
     {
-      len = strlen(argv[i]) + 1;
-      memcpy(iter, argv[i], len);
-      iter += len;
+        return ENOMEM;
     }
-  return 0;
+
+    iter = *argz;
+
+    for (i = 0; i < argc; i++)
+    {
+        len = strlen(argv[i]) + 1;
+        memcpy(iter, argv[i], len);
+        iter += len;
+    }
+
+    return 0;
 }
 
 void
 argz_stringify(char *argz, size_t argz_len, int sep)
 {
-  size_t i;
+    size_t i;
 
-  /* len includes trailing \0, which we don't want to replace. */
-  if (argz_len > 1)
-    for (i = 0; i < argz_len - 1; i++)
-      {
-        if (argz[i] == '\0')
-          argz[i] = sep;
-      }
+    /* len includes trailing \0, which we don't want to replace. */
+    if (argz_len > 1)
+        for (i = 0; i < argz_len - 1; i++)
+        {
+            if (argz[i] == '\0')
+            {
+                argz[i] = sep;
+            }
+        }
 }
 #endif
 
@@ -157,83 +180,126 @@ argz_stringify(char *argz, size_t argz_len, int sep)
 int
 login_tty(int fd)
 {
-  char *fdname;
-  int newfd;
+    char *fdname;
+    int newfd;
 
-  if (setsid () == -1)
-    return -1;
-  if ((fdname = ttyname (fd)))
+    if (setsid() == -1)
     {
-      if (fd != STDIN_FILENO)
-        close (STDIN_FILENO);
-      if (fd != STDOUT_FILENO)
-        close (STDOUT_FILENO);
-      if (fd != STDERR_FILENO)
-        close (STDERR_FILENO);
-      newfd = open (fdname, O_RDWR);
-      close (newfd);
+        return -1;
     }
-  dup2 (fd, STDIN_FILENO);
-  dup2 (fd, STDOUT_FILENO);
-  dup2 (fd, STDERR_FILENO);
-  if (fd > 2)
-    close (fd);
-  return 0;
+
+    if ((fdname = ttyname(fd)))
+    {
+        if (fd != STDIN_FILENO)
+        {
+            close(STDIN_FILENO);
+        }
+
+        if (fd != STDOUT_FILENO)
+        {
+            close(STDOUT_FILENO);
+        }
+
+        if (fd != STDERR_FILENO)
+        {
+            close(STDERR_FILENO);
+        }
+
+        newfd = open(fdname, O_RDWR);
+        close(newfd);
+    }
+
+    dup2(fd, STDIN_FILENO);
+    dup2(fd, STDOUT_FILENO);
+    dup2(fd, STDERR_FILENO);
+
+    if (fd > 2)
+    {
+        close(fd);
+    }
+
+    return 0;
 }
 
 int
 openpty(int *amaster, int *aslave, char *name,
         const struct termios *termp, const struct winsize *winp)
 {
-  int master, slave;
-  char pts[TTY_NAME_MAX];
+    int master, slave;
+    char pts[TTY_NAME_MAX];
 
-  if ((master = open ("/dev/ptmx", O_RDWR | O_NOCTTY)) >= 0)
+    if ((master = open("/dev/ptmx", O_RDWR | O_NOCTTY)) >= 0)
     {
-      grantpt (master);
-      unlockpt (master);
-      strcpy (pts, ptsname (master));
-      if ((slave = open (pts, O_RDWR | O_NOCTTY)) >= 0)
+        grantpt(master);
+        unlockpt(master);
+        strcpy(pts, ptsname(master));
+
+        if ((slave = open(pts, O_RDWR | O_NOCTTY)) >= 0)
         {
-          if (amaster)
-            *amaster = master;
-          if (aslave)
-            *aslave = slave;
-          if (name)
-            strcpy (name, pts);
-          if (termp)
-            tcsetattr (slave, TCSAFLUSH, termp);
-          if (winp)
-            ioctl (master, TIOCSWINSZ, (char *) winp);
-          return 0;
+            if (amaster)
+            {
+                *amaster = master;
+            }
+
+            if (aslave)
+            {
+                *aslave = slave;
+            }
+
+            if (name)
+            {
+                strcpy(name, pts);
+            }
+
+            if (termp)
+            {
+                tcsetattr(slave, TCSAFLUSH, termp);
+            }
+
+            if (winp)
+            {
+                ioctl(master, TIOCSWINSZ, (char *) winp);
+            }
+
+            return 0;
         }
-      close (master);
+
+        close(master);
     }
-  errno = ENOENT;
-  return -1;
+
+    errno = ENOENT;
+    return -1;
 }
 
 int
 forkpty(int *amaster, char *name,
         const struct termios *termp, const struct winsize *winp)
 {
-  int master, slave, pid;
+    int master, slave, pid;
 
-  if (openpty (&master, &slave, name, termp, winp) == -1)
-    return -1;
-  switch (pid = fork ())
+    if (openpty(&master, &slave, name, termp, winp) == -1)
     {
-      case -1:
         return -1;
-      case 0:
-        close (master);
-        login_tty (slave);
-        return 0;
     }
-  if (amaster)
-    *amaster = master;
-  close (slave);
-  return pid;
+
+    switch (pid = fork())
+    {
+        case -1:
+            return -1;
+
+        case 0:
+            close(master);
+            login_tty(slave);
+            return 0;
+    }
+
+    if (amaster)
+    {
+        *amaster = master;
+    }
+
+    close(slave);
+    return pid;
 }
 
 #endif

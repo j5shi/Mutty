@@ -18,8 +18,8 @@
 #if CYGWIN_VERSION_API_MINOR >= 91
 #include <argz.h>
 #else
-int argz_create (char *const argv[], char **argz, size_t *argz_len);
-void argz_stringify (char *argz, size_t argz_len, int sep);
+int argz_create(char *const argv[], char **argz, size_t *argz_len);
+void argz_stringify(char *argz, size_t argz_len, int sep);
 #endif
 
 #if CYGWIN_VERSION_API_MINOR >= 74
@@ -79,7 +79,10 @@ typedef const wchar *wstring;
 #define new(type) ((type *)malloc(sizeof(type)))
 #define newn(type, n) ((type *)calloc((n), sizeof(type)))
 #define renewn(p, n) ((typeof(p)) realloc((p), sizeof(*p) * (n)))
-static inline void delete(const void *p) { free((void *)p); }
+static inline void delete(const void *p)
+{
+    free((void *)p);
+}
 
 void strset(string *sp, string s);
 

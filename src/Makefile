@@ -22,24 +22,18 @@ SRC += childxx.cc
 SRC += winxx.cc
 SRC += res.rc
 
+RC   = windres
 BIN ?= mutty.exe
-CXX = g++
-CC  = gcc
-RC  = windres
+CXX  = g++
+CC   = gcc
 
-CXXFLAGS ?= -Wall -Wextra -std=gnu++11
-
-CFLAGS ?= -std=gnu99 -include std.h -Wall -Wextra -Wundef -Werror
-
-LDFLAGS := -static-libgcc -mwindows -lcomctl32 -limm32 -lwinspool -lole32 -luuid -ld2d1
-
-TARGET := $(shell $(CC) -dumpmachine)
-
-CPPFLAGS := -DTARGET=$(TARGET) -D_GNU_SOURCE
-
-BUILD_DIR = build/
-
-LDFLAGS := -L$(shell $(CC) -print-file-name=w32api) $(LDFLAGS)
+CFLAGS    ?= -std=gnu99 -include std.h -Wall -Wextra -Wundef -Werror
+CXXFLAGS  ?= -Wall -Wextra -std=gnu++11
+LDFLAGS   := -static-libgcc -mwindows -lcomctl32 -limm32 -lwinspool -lole32 -luuid -ld2d1
+TARGET    := $(shell $(CC) -dumpmachine)
+CPPFLAGS  := -DTARGET=$(TARGET) -D_GNU_SOURCE
+BUILD_DIR  = build/
+LDFLAGS   := -L$(shell $(CC) -print-file-name=w32api) $(LDFLAGS)
 
 ifdef DEBUG
   extraflags := -g -O0
@@ -48,7 +42,7 @@ else
   CPPFLAGS += -DNDEBUG
 endif
 
-CFLAGS += $(extraflags)
+CFLAGS   += $(extraflags)
 CXXFLAGS += $(extraflags)
 
 #***************************************************************************************************
@@ -63,6 +57,7 @@ $(BIN): $(objfiles)
 prepare_build = mkdir -pv $(dir $@)
 
 compileflags = -c $< -o $@ -MMD -MT $@
+
 $(BUILD_DIR)%.o: %.cc Makefile
 	@$(prepare_build)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(compileflags)
